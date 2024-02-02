@@ -1,9 +1,10 @@
 [versions]
 apache-pdfbox = "3.0.1"
 kotlin-jvm = "1.9.20"
+jackson-kotlin = "2.16.1"
 
 [libraries]
 apache-pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "apache-pdfbox" }
-
+jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-kotlin"}
 [plugins]
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-jvm" }
