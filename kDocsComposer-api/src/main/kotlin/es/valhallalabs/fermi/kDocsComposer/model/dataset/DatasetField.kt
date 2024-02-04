@@ -2,9 +2,9 @@ package es.valhallalabs.fermi.kDocsComposer.model.dataset
 
 import java.util.*
 
-data class DatasetField(
-    val datasetFieldId: DatasetFieldId = UUID.randomUUID(),
-    val dataSetFieldType: DataSetFieldType
+open class DatasetField(
+    open val datasetFieldId: DatasetFieldId = UUID.randomUUID(),
+    open val value: Any
 )
 
 typealias DatasetFieldId = UUID
