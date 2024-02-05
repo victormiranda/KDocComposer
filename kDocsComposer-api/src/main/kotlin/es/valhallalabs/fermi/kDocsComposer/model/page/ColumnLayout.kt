@@ -9,4 +9,5 @@ class ColumnLayout(
     override val frame: Frame
 ): StackedLayout {
     override val componentType  = ComponentType.COLUMN_LAYOUT
+    override val layoutType = LayoutType.COLUMN_LAYOUT
 }

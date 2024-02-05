@@ -9,6 +9,7 @@ enum class ComponentType {
     RELATIVE_LAYOUT,
     ROW_LAYOUT,
     COLUMN_LAYOUT,
+    CONTAINER,
     LABEL,
     TEXT_FIELD
 }
