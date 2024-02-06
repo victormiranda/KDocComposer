@@ -37,6 +37,14 @@ interface PageBody : Band
 
 interface PageFooter : Band
 
+
+class FreeLayoutPage(
+    override val pageHeader: PageHeader? = null,
+    override val pageBody: FreeLayoutPageBody,
+    override val pageFooter: PageFooter? = null
+) : Page
+
+
 class BandBasedPage(
     override val pageHeader: BandBasedPageHeader?,
     override val pageBody: BandBasedPageBody,
@@ -50,6 +58,25 @@ class BandBasedPageHeader(
 
     override val layout = RowLayout(frame = frame, elements = headerComponents)
     override val componentType = ComponentType.PAGE_HEADER
+}
+
+
+class FreeLayout(
+    override val frame: Frame,
+    override val elements: List<Component>,
+) : RelativeLayout {
+
+    override val componentType: ComponentType = ComponentType.LAYOUT
+    override val layoutType: LayoutType = LayoutType.RELATIVE_LAYOUT
+}
+
+class FreeLayoutPageBody(
+    override val frame: Frame,
+    val elements: List<Component>
+) : PageBody {
+
+    override val componentType = ComponentType.PAGE_BODY
+    override val layout: Layout = FreeLayout(frame = frame, elements = elements)
 }
 
 class BandBasedPageBody(
