@@ -15,14 +15,12 @@ import es.valhallalabs.fermi.kDocsComposer.model.component.Frame
 @JsonSubTypes(
     Type(value = BandBasedPage::class)
 )
-interface Page {
+interface Page: Component {
 
-    val pageHeader: PageHeader?
-    val pageBody: PageBody
-    val pageFooter: PageFooter?
+    val pageType: PageType
 }
 
-enum class PageType {
+enum class PageType { FreePage,
     BandBasedPage
 }
 
@@ -38,18 +36,17 @@ interface PageBody : Band
 interface PageFooter : Band
 
 
-class FreeLayoutPage(
-    override val pageHeader: PageHeader? = null,
-    override val pageBody: FreeLayoutPageBody,
-    override val pageFooter: PageFooter? = null
-) : Page
-
-
 class BandBasedPage(
-    override val pageHeader: BandBasedPageHeader?,
-    override val pageBody: BandBasedPageBody,
-    override val pageFooter: BandBasedPageFooter?
-) : Page
+    val pageHeader: BandBasedPageHeader?,
+    val pageBody: BandBasedPageBody,
+    val pageFooter: BandBasedPageFooter?
+) : Page {
+
+    override val componentType: ComponentType = ComponentType.PAGE_BODY
+    override val frame: Frame
+        get() = TODO("Not yet implemented")
+    override val pageType = PageType.BandBasedPage
+}
 
 class BandBasedPageHeader(
     override val frame: Frame,
@@ -70,13 +67,14 @@ class FreeLayout(
     override val layoutType: LayoutType = LayoutType.RELATIVE_LAYOUT
 }
 
-class FreeLayoutPageBody(
+open class FreeLayoutPage(
     override val frame: Frame,
     val elements: List<Component>
-) : PageBody {
+) : Page {
+
+    override val pageType = PageType.FreePage
 
     override val componentType = ComponentType.PAGE_BODY
-    override val layout: Layout = FreeLayout(frame = frame, elements = elements)
 }
 
 class BandBasedPageBody(

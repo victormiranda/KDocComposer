@@ -2,6 +2,7 @@ package es.valhallalabs.fermi.kDocsComposer.model.document
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import es.valhallalabs.fermi.kDocsComposer.model.page.BandBasedPage
 import es.valhallalabs.fermi.kDocsComposer.model.page.BandBasedPageBody
 import org.assertj.core.api.SoftAssertions
 import org.junit.jupiter.api.Test
@@ -62,11 +63,11 @@ class DocumentTest {
             softly.assertThat(section.name).isEqualTo("Document frontpage")
 
             softly.assertThat(section.pages).hasSize(1)
-            val page = section.pages[0]
+            val page = section.pages[0] as BandBasedPage
 
             softly.assertThat(page.pageBody.frame.width).isEqualTo("600")
             softly.assertThat(page.pageBody.frame.height).isEqualTo("900")
-            val bandBasedPageBody = page.pageBody as BandBasedPageBody
+            val bandBasedPageBody = page.pageBody
             softly.assertThat(bandBasedPageBody.pageBands[0].layout.layoutType).isEqualTo("ROW_LAYOUT")
         }
     }
