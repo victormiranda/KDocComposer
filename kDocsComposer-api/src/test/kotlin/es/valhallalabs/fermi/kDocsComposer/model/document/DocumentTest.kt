@@ -2,10 +2,11 @@ package es.valhallalabs.fermi.kDocsComposer.model.document
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import es.valhallalabs.fermi.kDocsComposer.model.page.BandBasedPage
-import es.valhallalabs.fermi.kDocsComposer.model.page.BandBasedPageBody
+import es.valhallalabs.fermi.kDocsComposer.model.page.*
 import org.assertj.core.api.SoftAssertions
 import org.junit.jupiter.api.Test
+import java.awt.print.PageFormat
+import java.util.*
 
 class DocumentTest {
 
@@ -53,22 +54,32 @@ class DocumentTest {
         val mapper = jacksonObjectMapper()
         val document: Document = mapper.readValue(documentJson)
 
-        // Use SoftAssertions
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(document.pageFormat.width).isEqualTo("600")
-            softly.assertThat(document.pageFormat.height).isEqualTo("900")
-
-            softly.assertThat(document.sections).hasSize(1)
-            val section = document.sections[0]
-            softly.assertThat(section.name).isEqualTo("Document frontpage")
-
-            softly.assertThat(section.pages).hasSize(1)
-            val page = section.pages[0] as BandBasedPage
-
-            softly.assertThat(page.pageBody.frame.width).isEqualTo("600")
-            softly.assertThat(page.pageBody.frame.height).isEqualTo("900")
-            val bandBasedPageBody = page.pageBody
-            softly.assertThat(bandBasedPageBody.pageBands[0].layout.layoutType).isEqualTo("ROW_LAYOUT")
+            softly.assertThat(document).usingRecursiveComparison().isEqualTo(
+                Document(
+                    pageFormat = PageFormat(width = "600", height = "900"), // rest of the data
+                    sections = listOf(
+                        Section(
+                            name = "Document frontpage",
+                            pages = listOf(
+                                Page(
+                                    pageBody = PageBody(
+                                        frame = Frame(width = "600", height = "900"),
+                                        pageBands = listOf(
+                                            PageBand(
+                                                layout = Layout(layoutType = "ROW_LAYOUT", elements = listOf())
+                                            )
+                                        )
+                                    ),
+                                    pageFooter = PageFooter(
+                                        frame = Frame(width = "600", height = "100")
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
         }
     }
 }
