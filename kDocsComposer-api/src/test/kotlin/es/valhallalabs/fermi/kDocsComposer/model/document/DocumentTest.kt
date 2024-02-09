@@ -2,10 +2,12 @@ package es.valhallalabs.fermi.kDocsComposer.model.document
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import es.valhallalabs.fermi.kDocsComposer.model.component.ComponentType
+import es.valhallalabs.fermi.kDocsComposer.model.component.Frame
 import es.valhallalabs.fermi.kDocsComposer.model.page.*
 import org.assertj.core.api.SoftAssertions
 import org.junit.jupiter.api.Test
-import java.awt.print.PageFormat
+import es.valhallalabs.fermi.kDocsComposer.model.page.PageFormat
 import java.util.*
 
 class DocumentTest {
@@ -57,27 +59,32 @@ class DocumentTest {
         SoftAssertions.assertSoftly { softly ->
             softly.assertThat(document).usingRecursiveComparison().isEqualTo(
                 Document(
-                    pageFormat = PageFormat(width = "600", height = "900"), // rest of the data
+                    pageFormat = PageFormat(width = 600f, height = 900f), // rest of the data
                     sections = listOf(
-                        Section(
+                        DocumentSection(
                             name = "Document frontpage",
                             pages = listOf(
-                                Page(
-                                    pageBody = PageBody(
-                                        frame = Frame(width = "600", height = "900"),
+                                BandBasedPage(
+                                    pageHeader = null,
+                                    pageBody = BandBasedPageBody(
+                                        frame = Frame(width = 600f, height = 900f),
                                         pageBands = listOf(
-                                            PageBand(
-                                                layout = Layout(layoutType = "ROW_LAYOUT", elements = listOf())
-                                            )
+                                            BaseBand(
+                                                layout = RowLayout(
+                                                    frame = Frame(width = 600f, height = 900f),
+                                                    elements = listOf()
+                                                ),
+                                                componentType = ComponentType.BAND,
+                                                frame = Frame(width = 600f, height = 900f),
+                                                )
                                         )
                                     ),
-                                    pageFooter = PageFooter(
-                                        frame = Frame(width = "600", height = "100")
-                                    )
+                                    pageFooter = null
                                 )
                             )
                         )
-                    )
+                    ),
+                    datasets = null
                 )
             )
         }

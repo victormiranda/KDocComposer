@@ -29,6 +29,10 @@ interface Band : Component {
     val layout: Layout
 }
 
+class BaseBand(override val componentType: ComponentType, override val frame: Frame, override val layout: Layout) : Band {
+
+}
+
 interface PageHeader : Band
 
 interface PageBody : Band
